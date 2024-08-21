@@ -27,10 +27,10 @@ fun BottomBar(
 ) {
 
     val homeTab = TabBarItem(title = UnscrambleScreen.Home.name, selectedIcon = Icons.Filled.Home, unselectedIcon = Icons.Outlined.Home)
-    val settingsTab = TabBarItem(title = UnscrambleScreen.Ranking.name, selectedIcon = Icons.Filled.Star, unselectedIcon = Icons.Outlined.Star)
-    val moreTab = TabBarItem(title = UnscrambleScreen.Profile.name, selectedIcon = Icons.Filled.Person, unselectedIcon = Icons.Outlined.Person)
+    val rankingTab = TabBarItem(title = UnscrambleScreen.Ranking.name, selectedIcon = Icons.Filled.Star, unselectedIcon = Icons.Outlined.Star)
+    val profileTab = TabBarItem(title = UnscrambleScreen.Profile.name, selectedIcon = Icons.Filled.Person, unselectedIcon = Icons.Outlined.Person)
 
-    val tabBarItems = listOf(homeTab, settingsTab, moreTab)
+    val tabBarItems = listOf(homeTab, rankingTab, profileTab)
 
     TabView(tabBarItems, onNavigate)
 }
