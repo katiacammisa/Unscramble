@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Unscramble</string>
+    <string name="welcome">Welcome to the Unscrambled game!</string>
+    <string name="start">New game</string>
+</resources>
