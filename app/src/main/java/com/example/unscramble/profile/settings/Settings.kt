@@ -1,4 +1,4 @@
-package com.example.unscramble.settings
+package com.example.unscramble.profile.settings
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
