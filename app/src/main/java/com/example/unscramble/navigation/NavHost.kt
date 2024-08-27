@@ -13,9 +13,10 @@ import com.example.unscramble.game.Game
 import com.example.unscramble.home.Home
 import com.example.unscramble.notifications.Notifications
 import com.example.unscramble.profile.Profile
+import com.example.unscramble.profile.friends.Friends
 import com.example.unscramble.ranking.Ranking
 import com.example.unscramble.scores.Scores
-import com.example.unscramble.settings.Settings
+import com.example.unscramble.profile.settings.Settings
 
 @Composable
 fun NavHostComposable(innerPadding: PaddingValues, navController: NavHostController) {
@@ -42,7 +43,12 @@ fun NavHostComposable(innerPadding: PaddingValues, navController: NavHostControl
             Scores()
         }
         composable(route = UnscrambleScreen.Profile.name) {
-            Profile()
+            Profile(
+                onNavigateToFriends = { navController.navigate(UnscrambleScreen.Friends.name) }
+            )
+        }
+        composable(route = UnscrambleScreen.Friends.name) {
+            Friends()
         }
         composable(route = UnscrambleScreen.Settings.name) {
             Settings()

@@ -10,6 +10,7 @@ enum class UnscrambleScreen {
     Scores,
 
     Profile,
+    Friends,
     Settings,
 }
 
