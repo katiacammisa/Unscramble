@@ -13,7 +13,9 @@ import com.example.unscramble.navigation.BottomBar
 import com.example.unscramble.navigation.NavHostComposable
 import com.example.unscramble.navigation.TopBar
 import com.example.unscramble.ui.theme.UnscrambleTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
