@@ -5,4 +5,8 @@
 
     <string name="retry">Retry</string>
     <string name="retry_load_ranking">Can\'t load ranking, try again later</string>
+
+    <string name="set_user_name">Set your user name</string>
+
+    <string name="save">Save</string>
 </resources>
