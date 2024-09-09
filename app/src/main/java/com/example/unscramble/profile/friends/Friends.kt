@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -28,12 +28,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.unscramble.data.Friend
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Friends() {
     val viewModel = hiltViewModel<FriendsViewModel>()
-    val friendsList by viewModel.friendList.collectAsState()
+    val friendsList by viewModel.friendList.collectAsState(initial = listOf())
 
     var showAlertDialog by remember {
         mutableStateOf(false)
@@ -44,7 +45,7 @@ fun Friends() {
     }
 
     if(showAlertDialog) {
-        AlertDialog(onDismissRequest = { showAlertDialog = false }) {
+        BasicAlertDialog(onDismissRequest = { showAlertDialog = false }) {
             Card {
                 Text(
                     text = "Your friend data is not complete",
@@ -170,7 +171,9 @@ fun FriendCard(
 @Composable
 fun PreviewFriendCard() {
     FriendCard(
-        friend = Friend("Katia Cammisa", "katia@gmail.com", age = "24"),
-        modifier = Modifier.fillMaxWidth().background(Color.White)
+        friend = Friend(name = "Katia Cammisa", email = "katia@gmail.com", age = "24", favorite = false),
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White)
     )
 }

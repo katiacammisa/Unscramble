@@ -1,24 +1,29 @@
 package com.example.unscramble.profile.friends
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
+import com.example.unscramble.data.Friend
+import com.example.unscramble.data.UnscrambleDatabase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FriendsViewModel @Inject constructor() : ViewModel() {
+class FriendsViewModel @Inject constructor(
+    @ApplicationContext val context: Context,
+) : ViewModel() {
 
-    private var _friendList = MutableStateFlow(listOf<Friend>())
-    val friendList = _friendList.asStateFlow()
+    private val unscrambleDatabase = UnscrambleDatabase.getDatabase(context)
+
+    val friendList = unscrambleDatabase.friendDao().getAllFriends().asFlow()
 
     fun addFriend(name: String, email: String, age: String) {
-        val friend = Friend(name, email, age)
-        val newList = _friendList.value + friend
+        val friend = Friend(name = name, email = email, age = age, favorite = false)
         viewModelScope.launch {
-            _friendList.emit(newList)
+            unscrambleDatabase.friendDao().insert(friend)
         }
     }
 }
