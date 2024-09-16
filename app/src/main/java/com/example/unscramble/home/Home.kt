@@ -1,9 +1,15 @@
 package com.example.unscramble.home
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -59,24 +65,29 @@ fun Home(
             }
         }
     } else {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(20.dp, alignment = Alignment.CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text(
-                text = userName,
-                fontSize = largeText,
-                fontWeight = FontWeight.Bold,
-            )
+        Box {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(20.dp, alignment = Alignment.CenterVertically),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    text = userName,
+                    fontSize = largeText,
+                    fontWeight = FontWeight.Bold,
+                )
 
-            Text(
-                text = stringResource(id = (R.string.welcome)),
-                fontSize = largeText,
-            )
+                Text(
+                    text = stringResource(id = (R.string.welcome)),
+                    fontSize = largeText,
+                )
 
-            Button(onClick = { onNavigateToGame() }) {
-                Text(text = stringResource(id = R.string.start))
+                Button(onClick = { onNavigateToGame() }) {
+                    Text(text = stringResource(id = R.string.start))
+                }
+            }
+            FloatingActionButton(onClick = { onNavigateToGame() }, modifier = Modifier.align(Alignment.BottomEnd).padding(bottom = 10.dp)) {
+                Icon(imageVector = Icons.Default.Add, contentDescription = "")
             }
         }
     }
