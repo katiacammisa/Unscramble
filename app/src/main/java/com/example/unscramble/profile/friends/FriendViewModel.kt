@@ -26,4 +26,16 @@ class FriendsViewModel @Inject constructor(
             unscrambleDatabase.friendDao().insert(friend)
         }
     }
+
+    fun deleteFriend(friend: Friend) {
+        viewModelScope.launch {
+            unscrambleDatabase.friendDao().delete(friend)
+        }
+    }
+
+    fun favoriteFriend(friend: Friend) {
+        viewModelScope.launch {
+            unscrambleDatabase.friendDao().update(friend.copy(favorite = true))
+        }
+    }
 }

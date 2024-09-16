@@ -1,5 +1,6 @@
 package com.example.unscramble.profile.friends
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,8 +13,11 @@ import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,11 +27,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.unscramble.common.DismissBackground
 import com.example.unscramble.data.Friend
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -70,6 +76,8 @@ fun Friends() {
         friendsList.forEach { friend ->
             FriendCard(
                 friend,
+                viewModel::deleteFriend,
+                viewModel::favoriteFriend,
                 modifier = Modifier.fillMaxWidth()
             )
         }
@@ -149,21 +157,51 @@ fun PreviewAddFriendForms() {
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FriendCard(
     friend: Friend,
+    onRemove: (Friend) -> Unit,
+    onFavorite: (Friend) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Row(
-        modifier = modifier.padding(10.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
+
+    val context = LocalContext.current
+    val dismissState = rememberSwipeToDismissBoxState(
+        confirmValueChange = {
+            when(it) {
+                SwipeToDismissBoxValue.StartToEnd -> {
+                    onRemove(friend)
+                    Toast.makeText(context, "Friend deleted", Toast.LENGTH_SHORT).show()
+                }
+                SwipeToDismissBoxValue.EndToStart -> {
+                    onFavorite(friend)
+                    Toast.makeText(context, "Friend saved to favorites", Toast.LENGTH_SHORT).show()
+                }
+                SwipeToDismissBoxValue.Settled -> return@rememberSwipeToDismissBoxState false
+            }
+            return@rememberSwipeToDismissBoxState true
+        },
+        // positional threshold of 25%
+        positionalThreshold = { it * .25f }
+    )
+
+
+    SwipeToDismissBox(
+        state = dismissState,
+        backgroundContent = { DismissBackground(dismissState = dismissState) },
     ) {
-        Column {
-            Text(text = friend.name)
-            Text(text = friend.email)
+        Row(
+            modifier = modifier.background(color = Color.LightGray).padding(10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column {
+                Text(text = friend.name)
+                Text(text = friend.email)
+            }
+            Text(text = friend.age)
         }
-        Text(text = friend.age)
     }
 }
 
@@ -172,6 +210,8 @@ fun FriendCard(
 fun PreviewFriendCard() {
     FriendCard(
         friend = Friend(name = "Katia Cammisa", email = "katia@gmail.com", age = "24", favorite = false),
+        {},
+        {},
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.White)
