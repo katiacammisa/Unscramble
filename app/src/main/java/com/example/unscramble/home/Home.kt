@@ -1,22 +1,31 @@
 package com.example.unscramble.home
 
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -29,7 +38,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -114,11 +122,68 @@ fun Home(
             }
             if(showBottomModal) {
                 ModalBottomSheet(onDismissRequest = { showBottomModal = !showBottomModal }) {
-                    Text(
-                        text = "I am in a bottom sheet",
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            AssistChip(
+                                onClick = {},
+                                label = { Text(text = "Profile") },
+                                enabled = true,
+                                leadingIcon = {
+                                    Icon(imageVector = Icons.Default.Settings, contentDescription = "")
+                                },
+                                trailingIcon = {},
+                            )
+
+                            Spacer(modifier = Modifier.size(10.dp))
+
+                            var filterSelected by remember {
+                                mutableStateOf(false)
+                            }
+                            FilterChip(
+                                selected = filterSelected,
+                                onClick = { filterSelected = !filterSelected },
+                                label = { Text(text = "Profile") },
+                                leadingIcon = if (filterSelected) {
+                                    {
+                                        Icon(
+                                            imageVector = Icons.Filled.Done,
+                                            contentDescription = "Done icon",
+                                            modifier = Modifier.size(FilterChipDefaults.IconSize)
+                                        )
+                                    }
+                                } else {
+                                    null
+                                },
+                            )
+                        }
+
+                        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                            var switchChecked by remember {
+                                mutableStateOf(false)
+                            }
+                            Switch(
+                                checked = switchChecked,
+                                onCheckedChange = { switchChecked = !switchChecked },
+                            )
+                            Spacer(modifier = Modifier.size(10.dp))
+                            Text(text = "This is a switch")
+                        }
+
+                        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                            var checkboxChecked by remember {
+                                mutableStateOf(false)
+                            }
+                            Checkbox(
+                                checked = checkboxChecked,
+                                onCheckedChange = { checkboxChecked = !checkboxChecked },
+                            )
+                            Spacer(modifier = Modifier.size(10.dp))
+                            Text(text = "This is a checkbox")
+                        }
+                    }
                     Spacer(modifier = Modifier.size(30.dp))
                 }
             }
